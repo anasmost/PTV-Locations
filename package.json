@@ -1,0 +1,17 @@
+{
+  "name": "ptv-map",
+  "version": "1.0.0",
+  "description": "Let the user search locations and display them on a Map",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "npm start --workspace=frontend",
+    "setup": "npm install --workspace=frontend"
+  },
+  "author": "Anas Mostafa",
+  "license": "ISC",
+  "workspaces": [
+    "frontend",
+    "backend"
+  ]
+}

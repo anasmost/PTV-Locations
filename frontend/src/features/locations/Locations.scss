@@ -1,0 +1,29 @@
+#locations {
+  display: flex;
+  column-gap: 2rem;
+  justify-content: center;
+  align-items: flex-start;
+
+  menu {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    row-gap: 1rem;
+
+    li {
+      cursor: pointer;
+      padding-bottom: 0.3rem;
+      border-bottom: 2px groove #00ffff60;
+
+      &:hover {
+        filter: brightness(0.7);
+      }
+    }
+  }
+
+  .map {
+    min-width: 300px;
+    min-height: 300px;
+    box-shadow: 0 0 3px 1px #00000024;
+  }
+}
