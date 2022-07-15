@@ -3,7 +3,7 @@ import { useSelector } from "react-redux";
 import { selectLocations } from "./locationsSlice";
 import "./Locations.scss";
 
-export function Locations() {
+function Locations() {
   const locations = useSelector(selectLocations);
 
   return (
@@ -17,3 +17,5 @@ export function Locations() {
     </figure>
   );
 }
+
+export default Locations;
