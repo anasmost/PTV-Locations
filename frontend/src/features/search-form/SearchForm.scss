@@ -1,0 +1,22 @@
+@use "../../app/colors" as c;
+
+.search {
+  margin: 2rem;
+
+  button {
+    background-color: c.$main-color;
+    margin-left: 0.5rem;
+  }
+
+  label {
+    display: inline-flex;
+    flex-direction: column;
+    row-gap: 0.5rem;
+  }
+
+  .error {
+    font-size: 0.8rem;
+    color: c.$error-color;
+    text-align: left;
+  }
+}

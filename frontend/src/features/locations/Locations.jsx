@@ -7,7 +7,7 @@ function Locations() {
   const locations = useSelector(selectLocations);
 
   return (
-    <figure id="locations">
+    <figure className="locations">
       <menu>
         {locations.map((location) => (
           <li key={location}>{location}</li>

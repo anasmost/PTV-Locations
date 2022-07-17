@@ -1,29 +1,39 @@
-#locations {
+@use "../../app/colors" as c;
+
+.locations {
   display: flex;
-  column-gap: 2rem;
-  justify-content: center;
+  flex-flow: row wrap;
+  gap: 2rem;
+  justify-content: space-between;
   align-items: flex-start;
 
   menu {
+    flex: 1 1 min-content;
     list-style: none;
-    display: flex;
-    flex-direction: column;
-    row-gap: 1rem;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 2rem;
 
     li {
+      text-align: left;
       cursor: pointer;
-      padding-bottom: 0.3rem;
-      border-bottom: 2px groove #00ffff60;
+      padding: 0.3rem;
+      border-bottom: 1px groove c.$main-color;
+      border-radius: 10px 10px 0 0 / 5px 5px 0 0;
 
       &:hover {
         filter: brightness(0.7);
+        background-color: transparentize(c.$main-color, 0.3);
       }
     }
   }
 
   .map {
-    min-width: 300px;
-    min-height: 300px;
+    flex: 1 2 auto;
+    width: 80vmin;
+    height: 80vmin;
     box-shadow: 0 0 3px 1px #00000024;
+    resize: both;
+    overflow: auto;
   }
 }

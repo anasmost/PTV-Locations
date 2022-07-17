@@ -1,6 +1,6 @@
 .App {
-  text-align: center;
   padding: 2rem;
+  text-align: center;
 }
 
 input,
@@ -20,7 +20,19 @@ button {
     filter: brightness(0.9);
   }
 }
-input:focus,
-input:hover {
-  box-shadow: 0 0 2px 1px #00000025;
+
+input {
+  &:focus,
+  &:hover {
+    box-shadow: 0 0 2px 1px #00000025;
+
+    &::placeholder {
+      font-size: 0.8rem;
+    }
+  }
+
+  &::placeholder {
+    font-size: 0.9rem;
+    transition: font-size 0.1s ease-in;
+  }
 }
