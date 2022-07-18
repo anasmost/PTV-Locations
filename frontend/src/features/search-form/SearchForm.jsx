@@ -7,25 +7,25 @@ import {
 } from "../locations/locationsSlice";
 import "./SearchForm.scss";
 
-export const SearchErrorMessage = ({
-  searchTerm,
-  validationObject = {
+export const ErrorMessage = ({
+  item,
+  validators = {
     "": Boolean,
-    "Entrez une valeur !": (searchTerm) => searchTerm === "",
+    "Entrez une valeur !": (item) => !item,
   },
   ...otherProps
 }) => {
-  for (const message in validationObject) {
+  for (const message in validators) {
     if (
-      Object.hasOwnProperty.call(validationObject, message) &&
-      validationObject[message](searchTerm)
+      Object.hasOwnProperty.call(validators, message) &&
+      validators[message](item)
     ) {
       return message && <span {...otherProps}>{message}</span>;
     }
   }
 };
 
-const validationObject = {
+const validators = {
   "": Boolean,
   "Entrez un emplacement !": (searchTerm) => !searchTerm,
 };
@@ -60,10 +60,10 @@ function SearchForm() {
           onChange={onChange}
         />
         {validateEntry && (
-          <SearchErrorMessage
+          <ErrorMessage
             className="error"
-            searchTerm={searchTerm}
-            validationObject={validationObject}
+            item={searchTerm}
+            validators={validators}
           />
         )}
       </label>

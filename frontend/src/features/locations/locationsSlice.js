@@ -7,20 +7,6 @@ const initialState = {
   status: "idle",
 };
 
-// The function below is called a thunk and allows us to perform async logic. It
-// can be dispatched like a regular action: `dispatch(fetchLocationsAsync(searchTerm))`. This
-// will call the thunk with the `dispatch` function as the first argument. Async
-// code can then be executed and other actions can be dispatched. Thunks are
-// typically used to make async requests.
-export const fetchLocationsAsync = createAsyncThunk(
-  "locations/fetchLocations",
-  async (searchTerm) => {
-    const response = await fetchLocations(searchTerm);
-    // The locations we return becomes the `fulfilled` action payload
-    return response.data;
-  }
-);
-
 export const locationsSlice = createSlice({
   name: "locations",
   initialState,
@@ -51,6 +37,21 @@ export const locationsSlice = createSlice({
   },
 });
 
+// The function below is called a thunk and allows us to perform async logic. It
+// can be dispatched like a regular action: `dispatch(fetchLocationsAsync(searchTerm))`. This
+// will call the thunk with the `dispatch` function as the first argument. Async
+// code can then be executed and other actions can be dispatched. Thunks are
+// typically used to make async requests.
+export const fetchLocationsAsync = createAsyncThunk(
+  "locations/fetchLocations",
+  async (searchTerm) => {
+    const locations = await fetchLocations(searchTerm);
+    // The locations we return becomes the `fulfilled` action payload
+    return locations;
+  }
+);
+
+// Action creators
 export const { clearLocations, setLocations, setSearchTerm } =
   locationsSlice.actions;
 

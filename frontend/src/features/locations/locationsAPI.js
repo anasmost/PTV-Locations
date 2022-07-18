@@ -1,9 +1,21 @@
-// A mock function to mimic making an async request for data
-export function fetchLocations(locationName = "Meknès") {
-  return new Promise((resolve) =>
-    setTimeout(
-      () => resolve({ data: ["Marjane 1", "Marjane 2", "Marjane 3"] }),
-      500
-    )
-  );
+import axios from "axios";
+
+export async function fetchLocations(searchTerm) {
+  try {
+    const { data } = await axios.get(
+      `http://localhost:4000/?search=${encodeURIComponent(searchTerm)}`
+    );
+
+    const { results: locations } = data;
+
+    return locations.map(
+      ({ location: { referenceCoordinate, formattedAddress } }) => ({
+        key: `${formattedAddress}/${JSON.stringify(referenceCoordinate)}`,
+        address: formattedAddress,
+        coordinates: referenceCoordinate,
+      })
+    );
+  } catch (err) {
+    throw new Error(err);
+  }
 }
