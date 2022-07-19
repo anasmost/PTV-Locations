@@ -12,7 +12,7 @@ export async function fetchLocations(searchTerm) {
       ({ location: { referenceCoordinate, formattedAddress } }) => ({
         key: `${formattedAddress}/${JSON.stringify(referenceCoordinate)}`,
         address: formattedAddress,
-        coordinates: referenceCoordinate,
+        latlng: Object.values(referenceCoordinate).reverse(),
       })
     );
   } catch (err) {

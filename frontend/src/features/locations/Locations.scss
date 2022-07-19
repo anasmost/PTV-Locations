@@ -1,25 +1,35 @@
 @use "../../app/colors" as c;
+$map-height: 80vmin;
 
 .locations {
   display: flex;
-  flex-flow: row wrap;
+  flex-flow: row nowrap;
   gap: 2rem;
   justify-content: space-between;
   align-items: stretch;
 
   .map-container {
     flex: 1 0 auto;
-    width: 80vmin;
-    height: 80vmin;
+    width: $map-height;
+    height: $map-height;
     box-shadow: 0 0 3px 1px #00000024;
     resize: both;
     overflow: hidden;
+
+    @media (orientation: landscape) {
+      width: 90vmin;
+    }
+    @media (orientation: portrait) {
+      height: 90vmin;
+    }
   }
 
   .search-results {
     flex: 1 1 auto;
     box-shadow: inset 0 0 5px 1px c.$main-color;
     padding: 1em;
+    overflow-y: auto;
+    max-height: $map-height;
 
     figcaption {
       margin-bottom: 2em;
@@ -41,9 +51,14 @@
       border-bottom: 1px groove c.$main-color;
       border-radius: 10px 10px 0 0 / 5px 5px 0 0;
 
-      &:hover {
+      &:hover,
+      &.selected {
         filter: brightness(0.7);
         background-color: transparentize(c.$main-color, 0.3);
+      }
+
+      &.selected {
+        filter: brightness(0.9);
       }
     }
 

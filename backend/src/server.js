@@ -16,7 +16,7 @@ const PTVLocations = axios.create({
   },
 });
 
-console.log("token", process.env.npm_config_token);
+console.log("token ->", process.env.npm_config_token);
 
 app.get("/", async (req, res) => {
   const { search: searchTerm } = req.query;
