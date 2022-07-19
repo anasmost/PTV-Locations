@@ -40,14 +40,13 @@ $map-height: 80vmin;
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
       grid-auto-rows: max-content;
-      gap: 2rem;
       align-items: start;
     }
 
     li {
       text-align: left;
       cursor: pointer;
-      padding: 0.5em;
+      padding: 1em 0.5em;
       border-bottom: 1px groove c.$main-color;
       border-radius: 10px 10px 0 0 / 5px 5px 0 0;
 

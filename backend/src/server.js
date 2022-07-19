@@ -1,22 +1,11 @@
 import express from "express";
-import axios from "axios";
-import accessControlMiddleware from "./access-control.js";
+import { restrictAccess } from "./middlewares.js";
+import { PTVLocations } from "./ptv-api.js";
 
 const app = express();
 const port = 4000;
 
-app.use(accessControlMiddleware);
-
-const PTVLocations = axios.create({
-  baseURL:
-    "https://xserver2-europe-eu-test.cloud.ptvgroup.com/services/rest/XLocate/locations/",
-  timeout: 6000,
-  headers: {
-    Authorization: process.env.npm_config_token,
-  },
-});
-
-console.log("token ->", process.env.npm_config_token);
+app.use(restrictAccess);
 
 app.get("/", async (req, res) => {
   const { search: searchTerm } = req.query;
