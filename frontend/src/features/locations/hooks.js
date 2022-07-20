@@ -1,32 +1,30 @@
 import { useEffect, useRef, useState } from "react";
 
-export function useLeaflet(mapContainerRef) {
-  const [location, setLocation] = useState({
+export function useLeaflet(mapContainerRef, locations) {
+  const [currentLocation, setCurrentLocation] = useState({
     key: null,
     latlng: null,
     address: null,
   });
   // 'L' prefix denotes Leaflet - Keep only one instance of each of either the map or the marker
-  const LMapRef = useRef(null);
-  const LMarkerRef = useRef(null);
+  const LmapRef = useRef(null);
+  const LmarkersRef = useRef([]);
+  const LmaxZoom = 2;
+  const LminOpacity = 0.6,
+    LmaxOpacity = 1;
 
-  // Initialize the map and the marker
+  // Initialize the map
   useEffect(() => {
     const L = window.L;
     const mapContainer = mapContainerRef.current;
-    const maxZoom = 5;
 
-    const marker = (LMarkerRef.current = L.marker(null, maxZoom).bindPopup(
-      null
-    ));
-
-    const map = (LMapRef.current = L.map(mapContainer)
+    const map = (LmapRef.current = L.map(mapContainer)
       .locate()
       .on("locationfound", function ({ latlng }) {
-        setLocation({ latlng, address: null });
+        setCurrentLocation({ latlng, address: null });
       })
       .on("locationerror", function () {
-        this.fitWorld({ maxZoom: 5 });
+        this.fitWorld({ LmaxZoom });
       }));
 
     const tileLayer = L.tileLayer(
@@ -38,29 +36,56 @@ export function useLeaflet(mapContainerRef) {
     ).addTo(map);
 
     return () => {
-      marker.remove();
       tileLayer.remove();
       map.remove();
     };
   }, [mapContainerRef]);
 
-  // Updates marker position and popup text upon location state update
+  // Initialize & Update locations markers upon new locations search results
   useEffect(() => {
-    const { latlng, address } = location;
-    const maxZoom = 5;
+    const L = window.L;
+    const map = LmapRef.current;
+
+    const markers = (LmarkersRef.current = locations.map(
+      ({ latlng, address }) =>
+        L.marker(latlng, { opacity: LminOpacity }).bindPopup(address).addTo(map)
+    ));
+
+    if (locations.length) setCurrentLocation(locations[0]);
+
+    return () => {
+      markers.forEach((marker) => {
+        marker.remove();
+      });
+    };
+  }, [locations]);
+
+  // Point out the marker of the current position
+  useEffect(() => {
+    const L = window.L;
+    const map = LmapRef.current;
+    const markers = LmarkersRef.current;
+
+    const { latlng, address } = currentLocation;
 
     if (latlng) {
-      const map = LMapRef.current;
-      const marker = LMarkerRef.current;
+      let currentMarker = markers.find((marker) =>
+        marker.getLatLng().equals(latlng)
+      );
 
-      map.setView(latlng, maxZoom);
-      marker.setLatLng(latlng).setPopupContent(address);
+      const markerExists = !!currentMarker;
 
-      if (!map.hasLayer(marker)) {
-        marker.addTo(map);
-      }
+      currentMarker ??= L.marker(latlng, LmaxZoom)
+        .bindPopup(address)
+        .addTo(map);
+      currentMarker.setOpacity(LmaxOpacity);
+      map.setView(latlng, LmaxZoom);
+
+      return markerExists
+        ? () => currentMarker.setOpacity(LminOpacity)
+        : () => currentMarker.remove();
     }
-  }, [location]);
+  }, [currentLocation]);
 
-  return [location, setLocation];
+  return [currentLocation, setCurrentLocation];
 }

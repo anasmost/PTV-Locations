@@ -3,7 +3,6 @@ import { useSelector } from "react-redux";
 import { selectLocations } from "./locationsSlice";
 import "./Locations.scss";
 import { useLeaflet } from "./hooks";
-import { useEffect } from "react";
 
 const isArabic = (sentence) => /[\u0600-\u06FF]/.test(sentence);
 
@@ -12,11 +11,10 @@ function Locations() {
 
   const mapContainerRef = useRef(null);
 
-  const [currentLocation, setCurrentLocation] = useLeaflet(mapContainerRef);
-
-  useEffect(() => {
-    locations[0] && setCurrentLocation(locations[0]);
-  }, [locations, setCurrentLocation]);
+  const [currentLocation, setCurrentLocation] = useLeaflet(
+    mapContainerRef,
+    locations
+  );
 
   return (
     <section className="locations">
